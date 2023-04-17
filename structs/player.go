@@ -1,4 +1,4 @@
-package player
+package structs
 
 type Player struct {
 	ID           int

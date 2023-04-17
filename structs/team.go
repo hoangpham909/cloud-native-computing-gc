@@ -1,4 +1,4 @@
-package team
+package structs
 
 type Team struct {
 	ID          int
