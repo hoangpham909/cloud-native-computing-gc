@@ -2,6 +2,9 @@ package structs
 
 import (
 	"math/rand"
+
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
 type Player struct {
@@ -21,7 +24,7 @@ var surnames = [20]string{"Lindgren", "Lindqvist", "Larsson", "Eliasson", "Hägg
 	"Höglund", "Löfven", "Thunberg", "Gustafsson", "Djarin", "Skywalker", "Jones", "Wayne", "Ågren", "Munther",
 	"Maggio", "Timell", "Johansson"}
 
-func RandomName()(fullname string){
+func randomName()(fullname string){
 	randomNumber1 := rand.Int63n(20)
 	randomNumber2 := rand.Int63n(20)
 
@@ -31,4 +34,25 @@ func RandomName()(fullname string){
 	fullname = forename + " " + surname
 
 	return
+}
+
+func AddRandomPlayer()bool{
+	db, err := gorm.Open(sqlite.Open("db/gc.db"), &gorm.Config{})
+	if err != nil {
+		return false
+	}
+
+	db.AutoMigrate(&Player{})
+
+	fullName := randomName()
+	teamId := RandomTeamID()
+
+	jerseyNumber := rand.Int63n(100)
+	birthYear := rand.Int63n(5) + 2000
+	
+	p := Player {Name: fullName, TeamID: int(teamId), JerseyNumber: int(jerseyNumber), BirthYear: int(birthYear)}
+
+	db.Create(&p)
+
+	return true
 }

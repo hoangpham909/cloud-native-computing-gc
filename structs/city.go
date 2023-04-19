@@ -25,15 +25,23 @@ func RandomCity()(city string){
 	return
 }
 
-func AddCities(){
+func AddCities()bool{
 	db, err := gorm.Open(sqlite.Open("db/gc.db"), &gorm.Config{})
 	if err != nil {
+		return false
 	}
 
 	db.AutoMigrate(&City{})
+	var count int64
 
+	db.Model(&City{}).Count(&count)
+
+	if(count < 1){
+	
 	for i := 0; i <= len(cities) -1; i++ {
         tempCity := City {Id: i+1, Name: cities[i]}
 		db.Create(&tempCity)
     }
+}
+	return true
 }

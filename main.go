@@ -10,7 +10,7 @@ import (
 
 func main() {
 	r := gin.Default()
-	structs.AddCities()
+	structs.AddRandomPlayer()
 	r.LoadHTMLGlob("templates/*")
 	r.GET("/", ginning.Home)
 	r.GET("/api/david", persons.David)
